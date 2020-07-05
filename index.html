@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./MyPromise.js"></script>
+    <script>
+        const pro = new MyPromise((resolve,reject)=>{
+            resolve(1)
+        })
+        pro.then(data=>{
+            // console.log(1,data)
+            // return 123
+            throw new Error(111)
+        }).then(data=>console.log(data),err=>console.log(err))
+        .catch(err=>console.log(err))
+
+        var proms = []
+        for (var i = 0; i < 10; i++) {
+            proms.push(new MyPromise((resolve,reject)=>{
+                setTimeout(() => {
+                    if(Math.random()>0.01){
+                        resolve("完成")
+                    }else{
+                        reject("失败")
+                    }
+                }, Math.random()*4000+1000);
+            }))
+        }
+        const pro2 = MyPromise.all(proms)
+        pro2.then(data=>console.log(data),err=>console.log(err))
+    </script>
+</body>
+
+</html>
