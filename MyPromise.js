@@ -143,30 +143,24 @@ const MyPromise = (() => {
         /**
          * 当数组中的每一个值都变为resolved时,返回新的promise的值resolve为一个数组,数组的内容为proms每个Promise的结果,
          * 如果有一个变为rejected, 那么直接结束
-         * @param {*} proms 假定为一个数组
+         * @param {*} pros 假定为一个数组
          */
-        static all(proms) {
-            return new MyPromise((resolve, reject) => {
-                const results = proms.map(p => {
-                    var obj = {
-                        result: undefined,
-                        isResolved: false
+          static all(pros) {
+              let resCount = 0;
+              let resArr = [];
+              return new MyPromise(function(resolve, reject) {
+                pros.forEach(p => {
+                  p.then(res => {
+                    resArr.push(res);
+                    if (++resCount === pros.length) {
+                      resolve(resArr);
                     }
-                    //判断是否已经全部完成
-                    p.then(data => {
-                        obj.result = data
-                        obj.isResolved = true
-                        const unResolved = results.filter(res => !res.isResolved)
-                        if (unResolved.length === 0) {
-                            console.log(results)
-                            resolve(results.map(res => res.result))
-                        }
-                    }, err => reject(err))
-                    return obj
-                })
-                console.log(results)
-            })
-        }
+                  }, err => {
+                    reject(err);
+                  });
+                });
+              });
+            }
         /**
          * 当数组中有一个处于已决状态,那么结束
          * @param {*} proms: 假定是一个数组 
