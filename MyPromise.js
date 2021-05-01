@@ -143,7 +143,7 @@ const MyPromise = (() => {
         /**
          * 当数组中的每一个值都变为resolved时,返回新的promise的值resolve为一个数组,数组的内容为proms每个Promise的结果,
          * 如果有一个变为rejected, 那么直接结束
-         * @param {*} proms 假定为一个数组
+         * @param {*} pros 假定为一个数组
          */
           static all(pros) {
               let resCount = 0;
